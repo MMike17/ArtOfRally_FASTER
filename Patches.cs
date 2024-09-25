@@ -19,8 +19,6 @@ namespace FASTER
     // 	}
     // }
 
-    // TODO : Add effects on profile
-    // TODO : Replace PP profile
     // TODO : Set effect from car speed on update
 
     [HarmonyPatch(typeof(CarCameras))]
@@ -41,7 +39,20 @@ namespace FASTER
             foreach (PostProcessEffectSettings effectSettings in volume.profile.settings)
                 customProfile.settings.Add(effectSettings);
 
-            //
+            LensDistortion lensDistortion = customProfile.AddSettings<LensDistortion>();
+            lensDistortion.intensity.overrideState = true;
+            lensDistortion.centerY.overrideState = true;
+
+            // TODO : Set lensDistortion.intensity default value
+
+            ChromaticAberration chromaticAberration = customProfile.AddSettings<ChromaticAberration>();
+            chromaticAberration.intensity.overrideState = true;
+            chromaticAberration.fastMode.overrideState = true;
+
+            // TODO : Set chromaticAberration.intensity default value
+            // TODO : Set chromaticAberration.fastMode default value
+
+            volume.profile = customProfile;
         }
 
         [HarmonyPatch("Update")]
@@ -49,6 +60,8 @@ namespace FASTER
         static void UpdatePostfix()
         {
             Main.Log("UpdatePostfix");
+
+            // TODO : Set this (LensDistortion.centerY.value) on update
         }
     }
 }
