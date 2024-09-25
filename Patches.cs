@@ -42,15 +42,12 @@ namespace FASTER
             LensDistortion lensDistortion = customProfile.AddSettings<LensDistortion>();
             lensDistortion.intensity.overrideState = true;
             lensDistortion.centerY.overrideState = true;
-
-            // TODO : Set lensDistortion.intensity default value
+            lensDistortion.intensity.value = 0;
 
             ChromaticAberration chromaticAberration = customProfile.AddSettings<ChromaticAberration>();
             chromaticAberration.intensity.overrideState = true;
             chromaticAberration.fastMode.overrideState = true;
-
-            // TODO : Set chromaticAberration.intensity default value
-            // TODO : Set chromaticAberration.fastMode default value
+            chromaticAberration.fastMode.value = Main.settings.distortionFastMode;
 
             volume.profile = customProfile;
         }
