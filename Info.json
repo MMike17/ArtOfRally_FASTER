@@ -1,11 +1,11 @@
 {
-	"Id": "ModBase",
-	"DisplayName": "ModBase",
+	"Id": "FASTER",
+	"DisplayName": "FASTER",
 	"Author": "MMike17",
 	"Version": "1.0.0",
 	"GameVersion": "1.5,5",
-	"AssemblyName": "ModBase.dll",
-	"EntryMethod": "ModBase.Main.Load",
-	"HomePage": "<modHomepageLink>",
-	"Repository": "<modRepoLink>"
+	"AssemblyName": "FASTER.dll",
+	"EntryMethod": "FASTER.Main.Load",
+	"HomePage": "https://www.nexusmods.com/artofrally/mods/15",
+	"Repository": "https://github.com/MMike17/ArtOfRally_FASTER"
 }

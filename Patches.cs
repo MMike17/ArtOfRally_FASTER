@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace ModBase
+namespace FASTER
 {
 	// Patch model
 	// [HarmonyPatch(typeof(), nameof())]
