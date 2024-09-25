@@ -74,6 +74,12 @@ namespace FASTER
             if (GetSpeed == null && HudGetter.hud != null)
                 GetSpeed = () => Main.GetField<float, HudManager>(HudGetter.hud, "digitalSpeedoVelo", BindingFlags.Instance);
 
+            // useless to keep going
+            if (GetSpeed == null)
+                return;
+
+            float speedPercent = Mathf.InverseLerp(Main.settings.minSpeedThreshold, Main.settings.maxSpeedThreshold, GetSpeed());
+
             if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
             {
                 lens.enabled.value = Main.settings.enableLensDistortion;
@@ -83,13 +89,12 @@ namespace FASTER
                     // TODO : Set this (LensDistortion.centerY.value) on update
                     //lens.centerY.value = ;
 
-                    //float max
-                    //float speedPercent = Mathf.InverseLerp();
+                    float targetValue =
+                        Main.settings.distortionType == Settings.DistortionType.In_Distortion ?
+                        Main.settings.distortionIntensityIn :
+                        Main.settings.distortionIntensityOut;
 
-                    //lens.intensity.value =
-                    //    Main.settings.distortionType == Settings.DistortionType.In_Distortion ?
-                    //    Main.settings.distortionIntensityIn :
-                    //    Main.settings.distortionIntensityOut;
+                    lens.intensity.value = Mathf.Lerp(0, targetValue, speedPercent);
                 }
             }
         }
