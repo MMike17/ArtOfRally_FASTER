@@ -23,6 +23,7 @@ namespace FASTER
     // }
 
     // TODO : Set effect from car speed on update
+    // TODO : Add patch to get player pos and forward
 
     [HarmonyPatch(typeof(HudManager), "Awake")]
     static class HudGetter
@@ -91,7 +92,7 @@ namespace FASTER
 
                     float targetValue =
                         Main.settings.distortionType == Settings.DistortionType.In_Distortion ?
-                        Main.settings.distortionIntensityIn :
+                        -Main.settings.distortionIntensityIn :
                         Main.settings.distortionIntensityOut;
 
                     lens.intensity.value = Mathf.Lerp(0, targetValue, speedPercent);
