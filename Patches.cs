@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace FASTER
 {
@@ -18,17 +19,29 @@ namespace FASTER
     // 	}
     // }
 
+    // TODO : Add effects on profile
+    // TODO : Replace PP profile
+    // TODO : Set effect from car speed on update
+
     [HarmonyPatch(typeof(CarCameras))]
     static class SpeedEffectManager
     {
-        // UIManager.Instance.PanelManager.mainCamera
-        // get camera object
+        static PostProcessProfile customProfile;
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        static void StartPostfix()
+        static void StartPostfix(CarCameras __instance)
         {
-            Main.Log("StartPostfix");
+            if (!Main.enabled)
+                return;
+
+            PostProcessVolume volume = __instance.GetComponentInChildren<PostProcessVolume>();
+            customProfile = PostProcessProfile.CreateInstance<PostProcessProfile>();
+
+            foreach (PostProcessEffectSettings effectSettings in volume.profile.settings)
+                customProfile.settings.Add(effectSettings);
+
+            //
         }
 
         [HarmonyPatch("Update")]
