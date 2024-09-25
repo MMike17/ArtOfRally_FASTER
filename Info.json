@@ -1,0 +1,11 @@
+{
+	"Id": "ModBase",
+	"DisplayName": "ModBase",
+	"Author": "MMike17",
+	"Version": "1.0.0",
+	"GameVersion": "1.5,5",
+	"AssemblyName": "ModBase.dll",
+	"EntryMethod": "ModBase.Main.Load",
+	"HomePage": "<modHomepageLink>",
+	"Repository": "<modRepoLink>"
+}
