@@ -15,6 +15,12 @@ namespace FASTER
             Out_Distortion
         }
 
+        [Header("General")]
+        [Draw(DrawType.Slider, Min = 0, Max = 150)]
+        public int minSpeedThreshold = 80;
+        [Draw(DrawType.Slider, Min = 50, Max = 200)]
+        public int maxSpeedThreshold = 180;
+
         [Header("Lens distortion")]
         [Draw(DrawType.Toggle)]
         public bool enableLensDistortion = true;
@@ -43,6 +49,8 @@ namespace FASTER
             Main.SetMarkers(showMarkers);
 
             //
+
+            // TODO : Do validation for minSpeedThreshold and maxSpeedThreshold
         }
     }
 }
