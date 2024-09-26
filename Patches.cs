@@ -22,8 +22,8 @@ namespace FASTER
     // 	}
     // }
 
-    // TODO : Set effect from car speed on update
-    // TODO : Add patch to get player pos and forward
+    // TODO : Add Bloom effect
+    // TODO : Add Vignette effect
 
     [HarmonyPatch(typeof(HudManager), "Awake")]
     static class HudGetter
@@ -38,14 +38,12 @@ namespace FASTER
     {
         static PostProcessProfile customProfile;
         static Func<float> GetSpeed;
+        static Transform player;
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPostfix(CarCameras __instance)
         {
-            if (!Main.enabled)
-                return;
-
             if (HudGetter.hud != null)
                 GetSpeed = () => Main.GetField<float, HudManager>(HudGetter.hud, "digitalSpeedoVelo", BindingFlags.Instance);
 
@@ -68,32 +66,36 @@ namespace FASTER
 
             volume.profile = customProfile;
 
-            Main.Log(volume.name);
+            if (!Main.settings.disableInfoLogs)
+                Main.Log("Switched post processing to " + volume.name);
         }
 
-        [HarmonyPatch("Update")]
-        [HarmonyPostfix]
-        static void UpdatePostfix()
+        [HarmonyPatch("LateUpdate")]
+        [HarmonyPrefix]
+        static void LateUpdatePrefix()
         {
+            // also check here to make sure we have it
             if (GetSpeed == null && HudGetter.hud != null)
                 GetSpeed = () => Main.GetField<float, HudManager>(HudGetter.hud, "digitalSpeedoVelo", BindingFlags.Instance);
 
-            // useless to keep going
-            if (GetSpeed == null)
+            // don't move that to Awake, we risk a game crashing null ref
+            if (player == null)
+                player = GameEntryPoint.EventManager.playerManager.playerRigidBody.transform;
+
+            if (!Main.enabled || GetSpeed == null || player == null)
                 return;
 
             float speedPercent = Mathf.InverseLerp(Main.settings.minSpeedThreshold, Main.settings.maxSpeedThreshold, GetSpeed());
 
-            // TODO : Lens distortion doesn't work for some reason
-
-            if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
+            if (Main.settings.enableLensDistortion && customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
             {
                 lens.enabled.value = Main.settings.enableLensDistortion;
 
                 if (Main.settings.enableLensDistortion)
                 {
-                    // TODO : Set this (LensDistortion.centerY.value) on update
-                    //lens.centerY.value = ;
+
+                    float positionPercent = Camera.main.WorldToViewportPoint(player.position + player.forward * 100).y;
+                    lens.centerY.value = Mathf.Lerp(-0.5f, 0.5f, positionPercent);
 
                     lens.intensity.value = Mathf.Lerp(0, -Main.settings.distortionIntensity, speedPercent);
                 }
