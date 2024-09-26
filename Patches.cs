@@ -51,6 +51,7 @@ namespace FASTER
 
             PostProcessVolume volume = __instance.GetComponentInChildren<PostProcessVolume>();
             customProfile = PostProcessProfile.CreateInstance<PostProcessProfile>();
+            customProfile.name = "Custom profile";
 
             foreach (PostProcessEffectSettings effectSettings in volume.profile.settings)
                 customProfile.settings.Add(effectSettings);
@@ -63,9 +64,11 @@ namespace FASTER
             ChromaticAberration chromaticAberration = customProfile.AddSettings<ChromaticAberration>();
             chromaticAberration.intensity.overrideState = true;
             chromaticAberration.fastMode.overrideState = true;
-            chromaticAberration.fastMode.value = Main.settings.distortionFastMode;
+            //chromaticAberration.fastMode.value = Main.settings.distortionFastMode;
 
             volume.profile = customProfile;
+
+            Main.Log(volume.name);
         }
 
         [HarmonyPatch("Update")]
@@ -81,6 +84,8 @@ namespace FASTER
 
             float speedPercent = Mathf.InverseLerp(Main.settings.minSpeedThreshold, Main.settings.maxSpeedThreshold, GetSpeed());
 
+            // TODO : Lens distortion doesn't work for some reason
+
             if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
             {
                 lens.enabled.value = Main.settings.enableLensDistortion;
@@ -90,12 +95,7 @@ namespace FASTER
                     // TODO : Set this (LensDistortion.centerY.value) on update
                     //lens.centerY.value = ;
 
-                    float targetValue =
-                        Main.settings.distortionType == Settings.DistortionType.In_Distortion ?
-                        -Main.settings.distortionIntensityIn :
-                        Main.settings.distortionIntensityOut;
-
-                    lens.intensity.value = Mathf.Lerp(0, targetValue, speedPercent);
+                    lens.intensity.value = Mathf.Lerp(0, -Main.settings.distortionIntensity, speedPercent);
                 }
             }
         }
