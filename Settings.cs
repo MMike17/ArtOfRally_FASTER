@@ -38,10 +38,10 @@ namespace FASTER
         [Header("Bloom")]
         [Draw(DrawType.Toggle)]
         public bool enableBloom = true;
-        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.8f, Max = 0.3f, Precision = 1)]
+        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.8f, Max = 0.2f, Precision = 1)]
         public float bloomThreshold = 0.4f;
-        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.5f, Max = 2, Precision = 1)]
-        public float bloomIntensity = 1.5f;
+        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.5f, Max = 5, Precision = 1)]
+        public float bloomIntensity = 3f;
 
         //[Draw(DrawType.Toggle)]
         public bool showMarkers;
