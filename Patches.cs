@@ -117,6 +117,17 @@ namespace FASTER
                     aberration.intensity.value = Mathf.Lerp(0, Main.settings.aberrationIntensity, speedPercent);
                 }
             }
+
+            if (customProfile.TryGetSettings<Bloom>(out Bloom bloom))
+            {
+                bloom.enabled.value = Main.enabled && Main.settings.enableBloom;
+
+                if (bloom.enabled.value)
+                {
+                    bloom.threshold.value = Mathf.Lerp(0.98f, Main.settings.bloomThreshold, speedPercent);
+                    bloom.intensity.value = Mathf.Lerp(0.5f, Main.settings.bloomIntensity, speedPercent);
+                }
+            }
         }
     }
 }
