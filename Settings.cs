@@ -7,8 +7,6 @@ namespace FASTER
 {
     public class Settings : ModSettings, IDrawable
     {
-        // [Draw(DrawType.)]
-
         public enum DistortionType
         {
             In_Distortion,
@@ -20,6 +18,11 @@ namespace FASTER
         public int minSpeedThreshold = 80;
         [Draw(DrawType.Slider, Min = 50, Max = 200)]
         public int maxSpeedThreshold = 180;
+        [Space]
+        [Draw(DrawType.Slider, Min = 0.5f, Max = 7, Precision = 1)]
+        public float effectUpSpeed = 3;
+        [Draw(DrawType.Slider, Min = 1, Max = 7, Precision = 1)]
+        public float effectDownSpeed = 4.5f;
 
         [Header("Lens distortion")]
         [Draw(DrawType.Toggle)]
@@ -49,9 +52,6 @@ namespace FASTER
         [Draw(DrawType.Slider, VisibleOn = "enableVignette|true", Min = 0.15f, Max = 0.5f, Precision = 1)]
         public float vignetteIntensity = 0.3f;
 
-        //[Draw(DrawType.Toggle)]
-        public bool showMarkers;
-
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
         public bool testMaxEffect;
@@ -62,10 +62,6 @@ namespace FASTER
 
         public void OnChange()
         {
-            Main.SetMarkers(showMarkers);
-
-            //
-
             // TODO : Do validation for minSpeedThreshold and maxSpeedThreshold
         }
     }
