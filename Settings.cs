@@ -69,7 +69,26 @@ namespace FASTER
 
             if (resetValues)
             {
-                // TODO : Reset values to default values
+                if (!disableInfoLogs)
+                    Main.Log("Reset settings.");
+
+                minSpeedThreshold = 80;
+                maxSpeedThreshold = 180;
+                effectUpSpeed = 3;
+                effectDownSpeed = 4.5f;
+                enableLensDistortion = true;
+                distortionIntensity = 40;
+                enableChromaticAberration = true;
+                aberrationFastMode = false;
+                aberrationIntensity = 1;
+                enableBloom = true;
+                bloomThreshold = 0.4f;
+                bloomIntensity = 3f;
+                enableVignette = true;
+                vignetteIntensity = 0.3f;
+                testMaxEffect = false;
+                disableInfoLogs = true;
+
                 resetValues = false;
             }
         }
