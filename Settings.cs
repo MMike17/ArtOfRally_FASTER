@@ -7,12 +7,6 @@ namespace FASTER
 {
     public class Settings : ModSettings, IDrawable
     {
-        public enum DistortionType
-        {
-            In_Distortion,
-            Out_Distortion
-        }
-
         [Header("General")]
         [Draw("Min speed threshold", DrawType.Slider, Min = 0, Max = 150)]
         public int minSpeedThreshold = 80;
