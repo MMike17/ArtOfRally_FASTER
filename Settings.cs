@@ -65,7 +65,8 @@ namespace FASTER
 
         public void OnChange()
         {
-            // TODO : Do validation for minSpeedThreshold and maxSpeedThreshold
+            minSpeedThreshold = Mathf.Min(minSpeedThreshold, maxSpeedThreshold);
+            maxSpeedThreshold = Mathf.Max(minSpeedThreshold, maxSpeedThreshold);
 
             if (resetValues)
             {
