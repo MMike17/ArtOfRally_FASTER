@@ -43,6 +43,12 @@ namespace FASTER
         [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.5f, Max = 5, Precision = 1)]
         public float bloomIntensity = 3f;
 
+        [Header("Vignette")]
+        [Draw(DrawType.Toggle)]
+        public bool enableVignette = true;
+        [Draw(DrawType.Slider, VisibleOn = "enableVignette|true", Min = 0.15f, Max = 0.5f, Precision = 1)]
+        public float vignetteIntensity = 0.3f;
+
         //[Draw(DrawType.Toggle)]
         public bool showMarkers;
 
