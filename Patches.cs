@@ -55,14 +55,18 @@ namespace FASTER
                 customProfile.settings.Add(effectSettings);
 
             LensDistortion lensDistortion = customProfile.AddSettings<LensDistortion>();
+            lensDistortion.enabled.overrideState = true;
+            lensDistortion.enabled.value = Main.settings.enableLensDistortion;
             lensDistortion.intensity.overrideState = true;
             lensDistortion.centerY.overrideState = true;
             lensDistortion.intensity.value = 0;
 
             ChromaticAberration chromaticAberration = customProfile.AddSettings<ChromaticAberration>();
+            chromaticAberration.enabled.overrideState = true;
+            chromaticAberration.enabled.value = Main.settings.enableChromaticAberration;
             chromaticAberration.intensity.overrideState = true;
             chromaticAberration.fastMode.overrideState = true;
-            //chromaticAberration.fastMode.value = Main.settings.distortionFastMode;
+            chromaticAberration.fastMode.value = Main.settings.aberrationFastMode;
 
             volume.profile = customProfile;
 
@@ -82,22 +86,32 @@ namespace FASTER
             if (player == null)
                 player = GameEntryPoint.EventManager.playerManager.playerRigidBody.transform;
 
-            if (!Main.enabled || GetSpeed == null || player == null)
+            if (GetSpeed == null || player == null)
                 return;
 
             float speedPercent = Mathf.InverseLerp(Main.settings.minSpeedThreshold, Main.settings.maxSpeedThreshold, GetSpeed());
 
-            if (Main.settings.enableLensDistortion && customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
+            if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
             {
-                lens.enabled.value = Main.settings.enableLensDistortion;
+                lens.enabled.value = Main.enabled && Main.settings.enableLensDistortion;
 
-                if (Main.settings.enableLensDistortion)
+                if (lens.enabled.value)
                 {
-
                     float positionPercent = Camera.main.WorldToViewportPoint(player.position + player.forward * 100).y;
                     lens.centerY.value = Mathf.Lerp(-0.5f, 0.5f, positionPercent);
 
                     lens.intensity.value = Mathf.Lerp(0, -Main.settings.distortionIntensity, speedPercent);
+                }
+            }
+
+            if (customProfile.TryGetSettings<ChromaticAberration>(out ChromaticAberration aberration))
+            {
+                aberration.enabled.value = Main.enabled && Main.settings.enableChromaticAberration;
+
+                if (aberration.enabled.value)
+                {
+                    aberration.fastMode.value = Main.settings.aberrationFastMode;
+                    aberration.intensity.value = Mathf.Lerp(0, Main.settings.aberrationIntensity, speedPercent);
                 }
             }
         }
