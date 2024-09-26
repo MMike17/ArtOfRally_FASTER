@@ -91,6 +91,9 @@ namespace FASTER
 
             float speedPercent = Mathf.InverseLerp(Main.settings.minSpeedThreshold, Main.settings.maxSpeedThreshold, GetSpeed());
 
+            if (Main.settings.testMaxEffect)
+                speedPercent = 1;
+
             if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
             {
                 lens.enabled.value = Main.enabled && Main.settings.enableLensDistortion;
