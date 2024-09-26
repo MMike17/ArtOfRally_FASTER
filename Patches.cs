@@ -71,7 +71,7 @@ namespace FASTER
             volume.profile = customProfile;
 
             if (!Main.settings.disableInfoLogs)
-                Main.Log("Switched post processing to " + volume.name);
+                Main.Log("Switched post processing to " + customProfile.name);
         }
 
         [HarmonyPatch("LateUpdate")]
@@ -94,7 +94,7 @@ namespace FASTER
             if (Main.settings.testMaxEffect)
                 speedPercent = 1;
 
-            if (customProfile.TryGetSettings<LensDistortion>(out LensDistortion lens))
+            if (customProfile.TryGetSettings(out LensDistortion lens))
             {
                 lens.enabled.value = Main.enabled && Main.settings.enableLensDistortion;
 
@@ -107,7 +107,7 @@ namespace FASTER
                 }
             }
 
-            if (customProfile.TryGetSettings<ChromaticAberration>(out ChromaticAberration aberration))
+            if (customProfile.TryGetSettings(out ChromaticAberration aberration))
             {
                 aberration.enabled.value = Main.enabled && Main.settings.enableChromaticAberration;
 
@@ -118,15 +118,17 @@ namespace FASTER
                 }
             }
 
-            if (customProfile.TryGetSettings<Bloom>(out Bloom bloom))
+            if (customProfile.TryGetSettings(out Bloom bloom))
             {
                 bool bloomEnabled = Main.enabled && Main.settings.enableBloom;
+                bloom.threshold.value = Mathf.Lerp(0.98f, Main.settings.bloomThreshold, bloomEnabled ? speedPercent : 0);
+                bloom.intensity.value = Mathf.Lerp(0.5f, Main.settings.bloomIntensity, bloomEnabled ? speedPercent : 0);
+            }
 
-                if (bloom.enabled.value)
-                {
-                    bloom.threshold.value = Mathf.Lerp(0.98f, Main.settings.bloomThreshold, bloomEnabled ? speedPercent : 0);
-                    bloom.intensity.value = Mathf.Lerp(0.5f, Main.settings.bloomIntensity, bloomEnabled ? speedPercent : 0);
-                }
+            if (customProfile.TryGetSettings(out Vignette vignette))
+            {
+                bool vignetteEnabled = Main.enabled && Main.settings.enableVignette;
+                vignette.intensity.value = Mathf.Lerp(0.15f, Main.settings.vignetteIntensity, vignetteEnabled ? speedPercent : 0);
             }
         }
     }
