@@ -32,8 +32,16 @@ namespace FASTER
         public bool enableChromaticAberration = true;
         [Draw(DrawType.Toggle, VisibleOn = "enableChromaticAberration|true")]
         public bool aberrationFastMode = false;
-        [Draw(DrawType.Slider, VisibleOn = "enableChromaticAberration|true", Min = 0.5f, Max = 2, Precision = 1)]
+        [Draw(DrawType.Slider, VisibleOn = "enableChromaticAberration|true", Min = 0.5f, Max = 3, Precision = 1)]
         public float aberrationIntensity = 1;
+
+        [Header("Bloom")]
+        [Draw(DrawType.Toggle)]
+        public bool enableBloom = true;
+        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.8f, Max = 0.3f, Precision = 1)]
+        public float bloomThreshold = 0.4f;
+        [Draw(DrawType.Slider, VisibleOn = "enableBloom|true", Min = 0.5f, Max = 2, Precision = 1)]
+        public float bloomIntensity = 1.5f;
 
         //[Draw(DrawType.Toggle)]
         public bool showMarkers;
