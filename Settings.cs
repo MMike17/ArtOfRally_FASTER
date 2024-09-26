@@ -27,9 +27,13 @@ namespace FASTER
         [Draw(DrawType.Slider, VisibleOn = "enableLensDistortion|true", Min = 30, Max = 90)]
         public int distortionIntensity = 40;
 
-        // TODO : This should be chromatic aberration
-        //[Draw(DrawType.Toggle, VisibleOn = "enableLensDistortion|true")]
-        //public bool distortionFastMode = false;
+        [Header("Chromatic aberration")]
+        [Draw(DrawType.Toggle)]
+        public bool enableChromaticAberration = true;
+        [Draw(DrawType.Toggle, VisibleOn = "enableChromaticAberration|true")]
+        public bool aberrationFastMode = false;
+        [Draw(DrawType.Slider, VisibleOn = "enableChromaticAberration|true", Min = 0.5f, Max = 2, Precision = 1)]
+        public float aberrationIntensity = 1;
 
         //[Draw(DrawType.Toggle)]
         public bool showMarkers;
